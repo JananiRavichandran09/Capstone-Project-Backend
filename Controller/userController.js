@@ -64,7 +64,7 @@ export const forgotPassword = (req, res) => {
                     pass: process.env.EMAIL_PW
                 }
             });
- const resetLink = `${ process.env.RESET_LINK }/${user._id}/${token}`
+ const resetLink = process.env.RESET_LINK 
 
             var mailOptions = {
                 from: process.env.EMAIL_ID,
