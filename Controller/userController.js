@@ -104,7 +104,7 @@ export const forgotPassword = (req, res) => {
             }
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
             
-            const resetLink = process.env.RESET_LINK       
+                   
             
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
@@ -113,7 +113,7 @@ export const forgotPassword = (req, res) => {
                     pass: process.env.EMAIL_PW
                 }
             });
-
+            const resetLink = `${process.env.RESET_LINK}/resetpassword/${user._id}/${token}`;
             var mailOptions = {
                 from: process.env.EMAIL_ID,
                 to: email,
@@ -136,10 +136,7 @@ export const forgotPassword = (req, res) => {
                 }
             });
         })
-        .catch(err => {
-            console.log(err);
-            res.status(500).send({ error: "Internal Server Error" });
-        });
+        
 };
 
 
