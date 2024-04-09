@@ -46,17 +46,66 @@ export const goldrate = (req, res) => {
     return res.json("Success")
 }
 
+// export const forgotPassword = (req, res) => {
+//     const { email } = req.body
+   
+//     User.findOne({ email: email })
+//         .then(user => {
+//             if (!user) {
+//                 return res.send({ Status: "User Not Found" }) // Return after sending response
+//             }
+//             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" })
+            
+
+//             var transporter = nodemailer.createTransport({
+//                 service: 'gmail',
+//                 auth: {
+//                     user: process.env.EMAIL_ID,
+//                     pass: process.env.EMAIL_PW
+//                 }
+//             });
+//  const resetLink = process.env.RESET_LINK 
+
+//             var mailOptions = {
+//                 from: process.env.EMAIL_ID,
+//                 to: email,
+//                 subject: 'Reset Your Password',
+//                  html: `
+//                 <p> Hello ${user.username} </p>
+//                 <p>You have requested to reset your password. Click the below button </p>
+//                 <a href="${resetLink}">
+//                     <button style="padding:10px; background-color: green; color:white; border-radius:5px; border:none;">Reset your Password</button>
+//                 </a>
+//                 `
+                
+//             };
+
+//             transporter.sendMail(mailOptions, function (error, info) {
+//                 if (error) {
+//                     console.log(error);
+//                 } else {
+//                     return res.send({ Status: "Success" }) // Return after sending email
+//                 }
+//             })
+//         })
+//         .catch(err => {
+//             console.log(err); // Handle any error occurred during the process
+//             res.status(500).send({ error: "Internal Server Error" });
+//         });
+// }
+
 export const forgotPassword = (req, res) => {
-    const { email } = req.body
+    const { email } = req.body;
    
     User.findOne({ email: email })
         .then(user => {
             if (!user) {
-                return res.send({ Status: "User Not Found" }) // Return after sending response
+                return res.send({ Status: "User Not Found" });
             }
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" })
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
             
-
+            const resetLink = `${process.env.RESET_LINK}/${user._id}/${token}`; // Concatenate user ID and token
+            
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
@@ -64,35 +113,35 @@ export const forgotPassword = (req, res) => {
                     pass: process.env.EMAIL_PW
                 }
             });
- const resetLink = process.env.RESET_LINK 
 
             var mailOptions = {
                 from: process.env.EMAIL_ID,
                 to: email,
                 subject: 'Reset Your Password',
-                 html: `
+                html: `
                 <p> Hello ${user.username} </p>
-                <p>You have requested to reset your password. Click the below link </p>
+                <p>You have requested to reset your password. Click the below button </p>
                 <a href="${resetLink}">
-                    <button style="padding:10px; background-color: green; color:white; border-radius:5px; border:none;">Reset your Password</button>
+                    <button style="padding:10px; background-color: green; color:white; border-radius:5px; border: none;">Reset your Password</button>
                 </a>
                 `
-                
             };
 
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
                     console.log(error);
+                    return res.status(500).send({ error: "Failed to send email" });
                 } else {
-                    return res.send({ Status: "Success" }) // Return after sending email
+                    return res.send({ Status: "Success" });
                 }
-            })
+            });
         })
         .catch(err => {
-            console.log(err); // Handle any error occurred during the process
+            console.log(err);
             res.status(500).send({ error: "Internal Server Error" });
         });
-}
+};
+
 
 
 export const resetPassword = (req, res) => {
