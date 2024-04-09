@@ -41,6 +41,7 @@ export const loginUser = (req, res) => {
     })
 }
 
+
 export const goldrate = (req, res) => {
     return res.json("Success")
 }

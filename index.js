@@ -19,9 +19,7 @@ connectDB()
 
 app.use('/api/user', userRouter)
 
-
 app.listen(port, () => {
     console.log("App is running in the port", port);
 })
-
 
