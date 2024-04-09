@@ -67,7 +67,7 @@ export const forgotPassword = (req, res) => {
                 from: process.env.EMAIL_ID,
                 to: email,
                 subject: 'Reset Your Password',
-                text: `http://localhost:5173/resetpassword/${user._id}/${token}`
+                text: `https://gold-rate-calculation.netlify.app/resetpassword/${user._id}/${token}`
             };
 
             transporter.sendMail(mailOptions, function (error, info) {

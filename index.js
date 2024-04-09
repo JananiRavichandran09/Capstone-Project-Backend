@@ -10,7 +10,7 @@ const port = process.env.PORT
 const app = express()
 app.use(express.json())
 app.use(cors({
-    origin: ["http://localhost:5173"],
+    origin: ["https://gold-rate-calculation.netlify.app"],
     methods:["GET", "POST"],
     credentials: true
 }))
@@ -23,3 +23,5 @@ app.use('/api/user', userRouter)
 app.listen(port, () => {
     console.log("App is running in the port", port);
 })
+
+
