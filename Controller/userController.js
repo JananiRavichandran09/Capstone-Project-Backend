@@ -104,7 +104,7 @@ export const forgotPassword = (req, res) => {
             }
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
             
-            const resetLink = `${process.env.RESET_LINK}?user=${user._id}&token=${token}`; // Concatenate user ID and token
+            const resetLink = process.env.RESET_LINK       
             
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
