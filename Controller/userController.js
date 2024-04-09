@@ -113,18 +113,16 @@ export const forgotPassword = (req, res) => {
                     pass: process.env.EMAIL_PW
                 }
             });
-            const resetLink = `${process.env.RESET_LINK}/resetpassword/${user._id}/${token}`;
+            
             var mailOptions = {
                 from: process.env.EMAIL_ID,
                 to: email,
                 subject: 'Reset Your Password',
                 html: `
                 <p> Hello ${user.username} </p>
-                <p>You have requested to reset your password. Click the below button </p>
-                <a href="${resetLink}">
-                    <button style="padding:10px; background-color: green; color:white; border-radius:5px; border: none;">Reset your Password</button>
-                </a>
-                `
+                <p>You have requested to reset your password. Click the below link</p>
+                `,
+                text: `https://gold-rate-calculation.netlify.app/resetpassword/${user._id}/${token}`
             };
 
             transporter.sendMail(mailOptions, function (error, info) {
