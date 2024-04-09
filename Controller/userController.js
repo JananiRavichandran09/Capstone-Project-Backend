@@ -48,6 +48,7 @@ export const goldrate = (req, res) => {
 
 export const forgotPassword = (req, res) => {
     const { email } = req.body
+   
     User.findOne({ email: email })
         .then(user => {
             if (!user) {
@@ -63,12 +64,20 @@ export const forgotPassword = (req, res) => {
                     pass: process.env.EMAIL_PW
                 }
             });
+ const resetLink = `${ process.env.RESET_LINK }/${user._id}/${token}`
 
             var mailOptions = {
                 from: process.env.EMAIL_ID,
                 to: email,
                 subject: 'Reset Your Password',
-                text: `https://gold-rate-calculation.netlify.app/resetpassword/${user._id}/${token}`
+                text: `
+                <p> Hello ${user.username} </p>
+                <p>You have requested to reset your password. Click the above link </p>
+                <a href= "${resetLink}">
+                <button style="padding:10px; background-color: green; color:white; border-radius:5px; border: none> Reset your Password </button>
+                </a>
+                `
+                
             };
 
             transporter.sendMail(mailOptions, function (error, info) {
