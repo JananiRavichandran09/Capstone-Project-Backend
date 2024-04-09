@@ -104,7 +104,8 @@ export const forgotPassword = (req, res) => {
             }
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
             
-                
+            const resetLink = `${process.env.RESET_LINK}/${user._id}/${token}`; // Concatenate user ID and token
+            
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
@@ -112,8 +113,7 @@ export const forgotPassword = (req, res) => {
                     pass: process.env.EMAIL_PW
                 }
             });
-const resetLink = `${process.env.RESET_LINK}/${user._id}/${token}`
-        
+
             var mailOptions = {
                 from: process.env.EMAIL_ID,
                 to: email,
@@ -121,7 +121,7 @@ const resetLink = `${process.env.RESET_LINK}/${user._id}/${token}`
                 html: `
                 <p> Hello ${user.username} </p>
                 <p>You have requested to reset your password. Click the below button </p>
-                <a href= ${resetLink}>
+                <a href="${resetLink}">
                     <button style="padding:10px; background-color: green; color:white; border-radius:5px; border: none;">Reset your Password</button>
                 </a>
                 `
@@ -141,6 +141,7 @@ const resetLink = `${process.env.RESET_LINK}/${user._id}/${token}`
             res.status(500).send({ error: "Internal Server Error" });
         });
 };
+
 
 
 
