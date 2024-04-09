@@ -70,11 +70,11 @@ export const forgotPassword = (req, res) => {
                 from: process.env.EMAIL_ID,
                 to: email,
                 subject: 'Reset Your Password',
-                text: `
+                 html: `
                 <p> Hello ${user.username} </p>
-                <p>You have requested to reset your password. Click the above link </p>
-                <a href= "${resetLink}">
-                <button style="padding:10px; background-color: green; color:white; border-radius:5px; border: none> Reset your Password </button>
+                <p>You have requested to reset your password. Click the below link </p>
+                <a href="${resetLink}">
+                    <button style="padding:10px; background-color: green; color:white; border-radius:5px; border:none;">Reset your Password</button>
                 </a>
                 `
                 
